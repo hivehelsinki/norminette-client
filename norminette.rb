@@ -14,6 +14,7 @@ else
 	    dir = File.expand_path(File.dirname(__FILE__))
 		    Dir.chdir dir
 end
+
 $config = ParseConfig.new("#{dir}/config.conf")
 
 Bundler.require
