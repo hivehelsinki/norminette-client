@@ -22,7 +22,7 @@ Given the temporary lockdown of Hive’s facilities, we have decided to give rem
 *Tested on Mac OS X 10.14.6 with ruby 2.6.3p62*
 
 ```bash
-git clone git@github.com:hivehelsinki/norminette-client.git ~/.norminette/
+git clone https://github.com/hivehelsinki/norminette-client.git ~/.norminette/
 cd ~/.norminette/
 bundle # it will ask for your password.
 ```
@@ -40,7 +40,7 @@ source ~/.zshrc
 
 ```bash
 sudo apt-get install ruby ruby-bundler ruby-dev build-essential
-git clone git@github.com:hivehelsinki/norminette-client.git ~/.norminette/
+git clone https://github.com/hivehelsinki/norminette-client.git ~/.norminette/
 cd ~/.norminette/
 bundle
 ```
