@@ -37,7 +37,6 @@ class Sender
 		@reply_queue.subscribe do |delivery_info, properties, payload|
 			@counter -= 1
 			block.call delivery_info, properties, payload
-	    	@lock.synchronize { @condition.signal }
 	  	end
 
 	  	at_exit { desinitialize }
@@ -53,14 +52,6 @@ class Sender
 		@x.publish content,	routing_key:  @routing_key,
 							reply_to:     @reply_queue.name,
 							correlation_id: SecureRandom.uuid
-	end
-
-	def sync_if_needed max = Facter.value('processors')['count']
-		@lock.synchronize { @condition.wait(@lock) } if @counter >= max
-	end
-
-	def sync
-		sync_if_needed 0 until @counter == 0
 	end
 end
 
@@ -81,8 +72,6 @@ class Norminette
 			populate_recursive files_or_directories.any? ? files_or_directories : [$current_path]
 			send_files options
 		end
-
-		@sender.sync
 	end
 
 	private
@@ -125,7 +114,6 @@ class Norminette
 	def send_files options
 		@files.each do |file|
 			send_file file, options.rules
-			@sender.sync_if_needed
 		end
 	end
 
@@ -170,7 +158,6 @@ class Parser
         puts opts
         puts "Norminette usage:"
         sender.publish({action: "help"}.to_json)
-        sender.sync
         exit
       end
     end
