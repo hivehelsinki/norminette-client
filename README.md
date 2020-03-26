@@ -39,7 +39,7 @@ source ~/.zshrc
 *Tested on Ubuntu 18.04.4 with ruby 2.5.1p57*
 
 ```bash
-sudo apt-get install ruby ruby-bundler build-essential
+sudo apt-get install ruby ruby-bundler ruby-dev build-essential
 git clone git@github.com:hivehelsinki/norminette-client.git ~/.norminette/
 cd ~/.norminette/
 bundle
