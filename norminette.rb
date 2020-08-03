@@ -8,11 +8,11 @@ require 'securerandom'
 $current_path = Dir.pwd
 
 if File.symlink?(__FILE__)
-	    dir = File.expand_path(File.dirname(File.readlink(__FILE__)))
-			Dir.chdir dir
+    dir = File.expand_path(File.dirname(File.readlink(__FILE__)))
+    Dir.chdir dir
 else
-	    dir = File.expand_path(File.dirname(__FILE__))
-		    Dir.chdir dir
+    dir = File.expand_path(File.dirname(__FILE__))
+    Dir.chdir dir
 end
 
 $config = ParseConfig.new("#{dir}/config.conf")
@@ -38,10 +38,10 @@ class Sender
 		@reply_queue.subscribe do |delivery_info, properties, payload|
 			@counter -= 1
 			block.call delivery_info, properties, payload
-	    	@lock.synchronize { @condition.signal }
-	  	end
+            @lock.synchronize { @condition.signal }
+        end
 
-	  	at_exit { desinitialize }
+        at_exit { desinitialize }
 	end
 
 	def desinitialize
@@ -71,7 +71,7 @@ class Norminette
 	def initialize
 		@files			= []
 		@sender 		= Sender.new do |delivery_info, properties, payload|
-	    	manage_result JSON.parse(payload)
+            manage_result JSON.parse(payload)
 		end
 	end
 
@@ -150,36 +150,36 @@ class Norminette
 end
 
 class Parser
-  def self.parse(options)
-  	args 	= OpenStruct.new
-    opt_parser = OptionParser.new do |opts|
-      opts.banner = "Usage: #$0 [options] [files_or_directories]"
+    def self.parse(options)
+        args 	= OpenStruct.new
+        opt_parser = OptionParser.new do |opts|
+            opts.banner = "Usage: #$0 [options] [files_or_directories]"
 
-      opts.on("-v", "--version", "Print version") do |n|
-      	args.version = true
-      end
+            opts.on("-v", "--version", "Print version") do |n|
+                args.version = true
+            end
 
-      opts.on("-R", "--rules Array", Array, "Rule to disable") do |rules|
-      	args.rules = rules
-      end
+            opts.on("-R", "--rules Array", Array, "Rule to disable") do |rules|
+                args.rules = rules
+            end
 
-      opts.on("-h", "--help", "Prints this help") do
-  		sender 	= Sender.new do |delivery_info, properties, payload|
-  			puts JSON.parse(payload)['display']
-		end
+            opts.on("-h", "--help", "Prints this help") do
+                sender 	= Sender.new do |delivery_info, properties, payload|
+                    puts JSON.parse(payload)['display']
+                end
 
-        puts opts
-        puts "Norminette usage:"
-        sender.publish({action: "help"}.to_json)
-        sender.sync
-        exit
-      end
+                puts opts
+                puts "Norminette usage:"
+                sender.publish({action: "help"}.to_json)
+                sender.sync
+                exit
+            end
+        end
+
+        opt_parser.parse!(options) rescue abort $!.to_s
+
+        return args
     end
-
-    opt_parser.parse!(options) rescue abort $!.to_s
-
-    return args
-  end
 end
 
 Norminette.new.check ARGV, Parser.parse(ARGV) if __FILE__ == $0
