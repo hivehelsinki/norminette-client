@@ -54,7 +54,7 @@ source ~/.zshrc
 <br /><br />
 ### Windows
 
-- Install ruby 2.7 without DevKit: https://rubyinstaller.org/downloads/
+- Install ruby 2.7 with DevKit: https://rubyinstaller.org/downloads/
 - git clone this repository or download as a zip file
 - extract into C:\norminette
 - Go inside this folder with cmd.exe
